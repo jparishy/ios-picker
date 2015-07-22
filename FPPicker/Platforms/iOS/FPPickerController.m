@@ -247,15 +247,31 @@
             });
         };
 
+        __weak typeof(self) weakSelf = self;
+        
         FPUploadAssetProgressBlock progressBlock = ^(float progress) {
             hud.progress = progress;
+            
+            __strong typeof(self) self = weakSelf;
+            
+            if(self.uploadProgress != nil)
+            {
+                self.uploadProgress(progress);
+            }
         };
 
         if ([info[@"UIImagePickerControllerMediaType"] isEqual:(NSString *)kUTTypeImage])
         {
             NSString *dataType = @"image/jpeg";
 
-            [FPLibrary uploadImage:imageToSave
+            UIImage *imageToUpload = imageToSave;
+            
+            if(self.imageTransform != nil)
+            {
+                imageToUpload = self.imageTransform(imageToUpload);
+            }
+            
+            [FPLibrary uploadImage:imageToUpload
                         ofMimetype:dataType
                        withOptions:info
                       shouldUpload:self.shouldUpload

@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "FPExternalHeaders.h"
 
+typedef UIImage *(^FPPickerControllerImageTransformBlock)(UIImage *image);
+typedef void (^FPPickerControllerUploadProgressBlock)(CGFloat progress);
+
 @interface FPPickerController : UINavigationController
 
 @property (nonatomic, weak) id <FPPickerControllerDelegate> fpdelegate;
@@ -32,5 +35,8 @@
 
 @property (nonatomic, assign) BOOL shouldUpload;
 @property (nonatomic, assign) BOOL shouldDownload;
+
+@property (nonatomic, copy) FPPickerControllerImageTransformBlock imageTransform;
+@property (nonatomic, copy) FPPickerControllerUploadProgressBlock uploadProgress;
 
 @end
